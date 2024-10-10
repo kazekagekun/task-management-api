@@ -1,5 +1,5 @@
 import { prisma } from '../../plugins/prisma';
-import { Tasks } from '@prisma/client';
+import { Prisma, Tasks } from '@prisma/client';
 
 export default class TasksService {
 	public async createTask({
@@ -49,14 +49,42 @@ export default class TasksService {
 		return updatedTask;
 	}
 
-	public async getTask({ id, name }: { id?: string; name?: string }): Promise<Tasks[]> {
-		const task = await prisma.tasks.findMany({
+	public async getTask({
+		id,
+		name,
+		skip,
+		sort,
+		order,
+	}: {
+		id?: string;
+		name?: string;
+		skip?: string;
+		sort?: string;
+		order?: 'asc' | 'desc';
+	}): Promise<{
+		total: number;
+		data: Tasks[];
+	}> {
+		const query: Prisma.TasksFindManyArgs = {
+			skip: Number(skip) || 0,
+			take: 10,
 			where: {
 				id: id ? Number(id) : undefined,
 				name: name ? name : undefined,
 			},
-		});
+			orderBy: {
+				[sort || 'id']: order || 'asc',
+			},
+		};
 
-		return task;
+		const [tasks, count] = await prisma.$transaction([
+			prisma.tasks.findMany(query),
+			prisma.tasks.count({ where: query.where }),
+		]);
+
+		return {
+			total: count,
+			data: tasks,
+		};
 	}
 }
