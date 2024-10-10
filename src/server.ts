@@ -1,8 +1,10 @@
 import dotenv from 'dotenv';
+import dotenvExpand from 'dotenv-expand';
+
 import { fastifyInitialize } from '.';
 
 const start = async () => {
-	dotenv.config();
+	dotenvExpand.expand(dotenv.config());
 	let fastify;
 
 	try {
@@ -14,8 +16,8 @@ const start = async () => {
 	}
 
 	await fastify.listen({
-		host: '127.0.0.1',
-		port: 3000,
+		host: fastify.config.HOST,
+		port: fastify.config.PORT,
 	});
 };
 
