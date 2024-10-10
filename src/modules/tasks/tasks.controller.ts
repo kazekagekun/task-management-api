@@ -39,7 +39,6 @@ export default class TasksController {
 	) {
 		try {
 			const tasks = await this.tasksService.getTask(request.query);
-
 			return reply.code(200).send({
 				success: true,
 				data: tasks,
