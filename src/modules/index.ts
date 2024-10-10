@@ -14,5 +14,5 @@ export default fastifyPlugin(async (fastify: FastifyInstance, options: FastifyPl
 		return { status: 'OK' };
 	});
 
-	await Promise.all([fastify.register(task, getOptionsWithPrefix(options, '/task'))]);
+	await Promise.all([fastify.register(task, getOptionsWithPrefix(options, '/tasks'))]);
 });
