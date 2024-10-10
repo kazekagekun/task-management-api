@@ -23,7 +23,6 @@ const createTaskSchemaResponseSchema = z.object({
 
 const getTasksQuerySchema = z.object({
 	skip: z.string().optional(),
-	take: z.string().optional(),
 	name: z.string().optional(),
 	id: z.string().optional(),
 	sort: z.string().optional(),
@@ -43,7 +42,7 @@ const getTasksSchemaResponseSchema = z.object({
 				...taskCore,
 			}),
 		),
-	})
+	}),
 });
 
 const updateTaskSchema = z.object({

@@ -52,31 +52,29 @@ export default class TasksService {
 	public async getTask({
 		id,
 		name,
-		take,
 		skip,
-        sort,
-        order,
+		sort,
+		order,
 	}: {
 		id?: string;
 		name?: string;
-		take?: string;
 		skip?: string;
-        sort?: string;
-        order?: 'asc' | 'desc';
+		sort?: string;
+		order?: 'asc' | 'desc';
 	}): Promise<{
-        total: number;
+		total: number;
 		data: Tasks[];
 	}> {
 		const query: Prisma.TasksFindManyArgs = {
 			skip: Number(skip) || 0,
-			take: Number(take) || 10,
+			take: 10,
 			where: {
 				id: id ? Number(id) : undefined,
 				name: name ? name : undefined,
 			},
-            orderBy: {
-                [sort || 'id']: order || 'asc',
-            }
+			orderBy: {
+				[sort || 'id']: order || 'asc',
+			},
 		};
 
 		const [tasks, count] = await prisma.$transaction([
@@ -85,7 +83,7 @@ export default class TasksService {
 		]);
 
 		return {
-            total: count,
+			total: count,
 			data: tasks,
 		};
 	}
