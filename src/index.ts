@@ -1,4 +1,6 @@
 import Fastify from 'fastify';
+import plugins from './plugins';
+import modules from './modules';
 
 const getLoggerConfig = () => {
 	switch (process.env.NODE_ENV) {
@@ -25,6 +27,9 @@ export async function fastifyInitialize() {
 		logger: getLoggerConfig(),
 		pluginTimeout: 30000, // 20 seconds
 	});
+
+	await fastify.register(plugins);
+	await fastify.register(modules, { prefix: '/api' });
 
 	return fastify;
 }

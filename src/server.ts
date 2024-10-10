@@ -14,7 +14,6 @@ const start = async () => {
 		console.error(error);
 		return;
 	}
-
 	await fastify.listen({
 		host: fastify.config.HOST,
 		port: fastify.config.PORT,

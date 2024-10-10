@@ -13,14 +13,10 @@ type NODE_ENV = (typeof NODE_ENVS)[number];
 declare module 'fastify' {
 	interface FastifyInstance {
 		config: {
-			SECRET: string;
-			PRIVATE: string;
-			PUBLIC: string;
 			HOST: string;
 			PORT: number;
 			DATABASE_URL: string;
 			DATABASE_URL_NON_POOLING: string;
-			REDIS_URL: string;
 			NODE_ENV: NODE_ENV;
 			ALLOWED_ORIGINS: string[];
 		};
@@ -35,24 +31,8 @@ export default fastifyPlugin(
 	) => {
 		const schema = {
 			type: 'object',
-			required: [
-				'SECRET',
-				'PRIVATE',
-				'PUBLIC',
-				'DATABASE_URL',
-				'DATABASE_URL_NON_POOLING',
-				'REDIS_URL',
-			],
+			required: ['DATABASE_URL', 'DATABASE_URL_NON_POOLING'],
 			properties: {
-				SECRET: {
-					type: 'string',
-				},
-				PRIVATE: {
-					type: 'string',
-				},
-				PUBLIC: {
-					type: 'string',
-				},
 				HOST: {
 					type: 'string',
 					default: '0.0.0.0',
@@ -74,7 +54,7 @@ export default fastifyPlugin(
 				ALLOWED_ORIGINS: {
 					type: 'string',
 					separator: ',',
-					default: 'http://localhost:4321',
+					default: 'http://localhost:3000, http://0.0.0.0:3000, http://127.0.0.1:3000',
 				},
 			},
 		};
