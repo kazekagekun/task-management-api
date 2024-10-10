@@ -21,10 +21,11 @@ const createTaskSchemaResponseSchema = z.object({
 
 const getTasksQuerySchema = z.object({
 	name: z.string().optional(),
+	id: z.string().optional(),
 });
 
-const getTasksParamsSchema = z.object({
-	id: z.string().optional(),
+const updateTasksParamsSchema = z.object({
+	id: z.string(),
 });
 
 const getTasksSchemaResponseSchema = z.object({
@@ -37,7 +38,9 @@ const getTasksSchemaResponseSchema = z.object({
 });
 
 const updateTaskSchema = z.object({
-	...taskCore,
+	name: z.string().min(1).max(255),
+	description: z.string().min(1).max(500),
+	dueDate: z.date(),
 });
 
 const updateTaskSchemaResponseSchema = z.object({
@@ -49,13 +52,11 @@ const updateTaskSchemaResponseSchema = z.object({
 
 export type CreateTaskBody = z.infer<typeof createTaskSchema>;
 
-export type GetTasksParams = z.infer<typeof getTasksParamsSchema>;
-
 export type GetTasksQuery = z.infer<typeof getTasksQuerySchema>;
 
-export type UpdateTaskBody = z.infer<typeof getTasksSchemaResponseSchema>;
+export type UpdateTaskBody = z.infer<typeof updateTaskSchema>;
 
-export type UpdateTaskParams = z.infer<typeof getTasksParamsSchema>;
+export type UpdateTaskParams = z.infer<typeof updateTasksParamsSchema>;
 
 export type UpdateTaskResponse = z.infer<typeof updateTaskSchemaResponseSchema>;
 
@@ -64,9 +65,9 @@ export const { schemas: tasksSchema, $ref } = buildJsonSchemas(
 		createTaskSchema,
 		createTaskSchemaResponseSchema,
 		getTasksQuerySchema,
-		getTasksParamsSchema,
 		getTasksSchemaResponseSchema,
 		updateTaskSchema,
+		updateTasksParamsSchema,
 		updateTaskSchemaResponseSchema,
 	},
 	{

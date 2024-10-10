@@ -1,23 +1,23 @@
 import { FastifyInstance } from 'fastify';
 import { $ref } from './tasks.schema';
+import TasksController from './tasks.controller';
+import TasksService from './tasks.service';
 
 export default async (fastify: FastifyInstance) => {
-	console.log($ref('getTasksParamsSchema'));
+	const taskController = new TasksController(new TasksService());
+
 	fastify.get(
-		'/:id',
+		'/',
 		{
 			schema: {
 				tags: ['Tasks'],
-				params: $ref('getTasksParamsSchema'),
 				querystring: $ref('getTasksQuerySchema'),
 				response: {
 					200: $ref('getTasksSchemaResponseSchema'),
 				},
 			},
 		},
-		async () => {
-			return { hello: 'world' };
-		},
+		taskController.getTasksHander.bind(taskController),
 	);
 
 	fastify.post(
@@ -31,9 +31,7 @@ export default async (fastify: FastifyInstance) => {
 				},
 			},
 		},
-		async () => {
-			return { hello: 'world' };
-		},
+		taskController.createTaskHandler.bind(taskController),
 	);
 
 	fastify.put(
@@ -41,15 +39,13 @@ export default async (fastify: FastifyInstance) => {
 		{
 			schema: {
 				tags: ['Tasks'],
-				params: $ref('getTasksParamsSchema'),
+				params: $ref('updateTasksParamsSchema'),
 				body: $ref('updateTaskSchema'),
 				response: {
 					200: $ref('updateTaskSchemaResponseSchema'),
 				},
 			},
 		},
-		async () => {
-			return { hello: 'world' };
-		},
+		taskController.updateTaskHandler.bind(taskController),
 	);
 };

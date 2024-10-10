@@ -1,0 +1,139 @@
+{
+	"info": {
+		"name": "Tasks API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Get Tasks",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/tasks",
+					"host": ["{{baseUrl}}"],
+					"path": ["tasks"],
+					"query": [
+						{
+							"key": "name",
+							"value": "{{taskName}}"
+						},
+						{
+							"key": "id",
+							"value": "{{taskId}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Task",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\": \"{{taskName}}\",\n    \"description\": \"{{taskDescription}}\",\n    \"dueDate\": \"{{taskDueDate}}\"\n}"
+				},
+				"url": {
+					"raw": "{{baseUrl}}/tasks",
+					"host": ["{{baseUrl}}"],
+					"path": ["tasks"]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update Task",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\": \"{{updatedTaskName}}\",\n    \"description\": \"{{updatedTaskDescription}}\",\n    \"dueDate\": \"{{updatedTaskDueDate}}\"\n}"
+				},
+				"url": {
+					"raw": "{{baseUrl}}/tasks/:id",
+					"host": ["{{baseUrl}}"],
+					"path": ["tasks", ":id"],
+					"variable": [
+						{
+							"key": "id",
+							"value": "{{taskId}}"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [""]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [""]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "baseUrl",
+			"value": "http://localhost:3000/api",
+			"type": "string"
+		},
+		{
+			"key": "taskId",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "taskName",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "taskDescription",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "taskDueDate",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "updatedTaskName",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "updatedTaskDescription",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "updatedTaskDueDate",
+			"value": "",
+			"type": "string"
+		}
+	]
+}
