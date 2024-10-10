@@ -6,7 +6,7 @@ export const prisma = new PrismaClient();
 
 export default fastifyPlugin(
 	async (fastify: FastifyInstance) => {
-		await prisma.$connect().catch((error: { message: unknown; }) => {
+		await prisma.$connect().catch((error: { message: unknown }) => {
 			fastify.log.error(`${error.message}`);
 		});
 

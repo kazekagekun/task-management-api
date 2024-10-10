@@ -7,7 +7,5 @@ import prisma from './prisma';
 export default fastifyPlugin(async (fastify: FastifyInstance) => {
 	await Promise.all([fastify.register(config)]);
 
-	await Promise.all([
-		fastify.register(prisma),
-	]);
+	await Promise.all([fastify.register(prisma)]);
 });
