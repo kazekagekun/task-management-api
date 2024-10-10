@@ -21,7 +21,7 @@ const createTaskSchemaResponseSchema = z.object({
 
 const getTasksQuerySchema = z.object({
 	name: z.string().optional(),
-    id: z.string().optional(),
+	id: z.string().optional(),
 });
 
 const updateTasksParamsSchema = z.object({
@@ -67,7 +67,7 @@ export const { schemas: tasksSchema, $ref } = buildJsonSchemas(
 		getTasksQuerySchema,
 		getTasksSchemaResponseSchema,
 		updateTaskSchema,
-        updateTasksParamsSchema,
+		updateTasksParamsSchema,
 		updateTaskSchemaResponseSchema,
 	},
 	{
