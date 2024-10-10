@@ -60,7 +60,6 @@ export default class TasksController {
 		reply: FastifyReply,
 	) {
 		try {
-			console.log(request.params);
 			const task = await this.tasksService.updateTask(request.params.id, request.body);
 
 			return reply.code(200).send({
