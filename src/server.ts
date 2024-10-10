@@ -14,8 +14,8 @@ const start = async () => {
     }
 
     await fastify.listen({
-		host: fastify.config.HOST,
-		port: fastify.config.PORT,
+		host: "127.0.0.1",
+		port: 3000,
 	});
 }
 
