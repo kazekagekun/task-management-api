@@ -55,7 +55,7 @@ export default class TasksService {
 		page,
 		sort,
 		order,
-		description
+		description,
 	}: {
 		id?: string;
 		name?: string;
@@ -80,7 +80,7 @@ export default class TasksService {
 				[sort || 'id']: order || 'asc',
 			},
 		};
-		console.log(query)
+		console.log(query);
 
 		const [tasks, count] = await prisma.$transaction([
 			prisma.tasks.findMany(query),
