@@ -52,21 +52,22 @@ export default class TasksService {
 	public async getTask({
 		id,
 		name,
-		skip,
+		page,
 		sort,
 		order,
 	}: {
 		id?: string;
 		name?: string;
-		skip?: string;
+		page?: string;
 		sort?: string;
 		order?: 'asc' | 'desc';
 	}): Promise<{
 		total: number;
 		data: Tasks[];
+		pageTotal: number;
 	}> {
 		const query: Prisma.TasksFindManyArgs = {
-			skip: Number(skip) || 0,
+			skip: (Number(page) - 1) * 10 || 0,
 			take: 10,
 			where: {
 				id: id ? Number(id) : undefined,
@@ -84,6 +85,7 @@ export default class TasksService {
 
 		return {
 			total: count,
+			pageTotal: Math.ceil(count / 10),
 			data: tasks,
 		};
 	}

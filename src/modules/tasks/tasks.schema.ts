@@ -7,6 +7,8 @@ const taskCore = {
 	name: z.string().min(1).max(255),
 	description: z.string().min(1).max(500),
 	dueDate: z.date(),
+	createdAt: z.date().optional(),
+	updatedAt: z.date().optional(),
 	userId: z.string().optional(),
 };
 
@@ -22,7 +24,7 @@ const createTaskSchemaResponseSchema = z.object({
 });
 
 const getTasksQuerySchema = z.object({
-	skip: z.string().optional(),
+	page: z.string().optional(),
 	name: z.string().optional(),
 	id: z.string().optional(),
 	sort: z.string().optional(),
@@ -37,6 +39,7 @@ const getTasksSchemaResponseSchema = z.object({
 	...responseEnvelopeSchema,
 	data: z.object({
 		total: z.number(),
+		pageTotal: z.number(),
 		data: z.array(
 			z.object({
 				...taskCore,
