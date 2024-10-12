@@ -1,0 +1,20 @@
+name: Style
+on:
+  pull_request:
+    branches:
+      - main
+jobs:
+  format:
+    name: Format
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [19]
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Check Format
+        run: npm exec prettier --check .

@@ -1,0 +1,23 @@
+name: Build
+on:
+  pull_request:
+    branches:
+      - main
+jobs:
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [19]
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Generate Prisma Client
+        run: npm exec prisma generate
+
+      - name: Run Build
+        run: npm run build
