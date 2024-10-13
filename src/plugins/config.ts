@@ -19,6 +19,7 @@ declare module 'fastify' {
 			DATABASE_URL_NON_POOLING: string;
 			NODE_ENV: NODE_ENV;
 			ALLOWED_ORIGINS: string[];
+			JWT_SECRET: string;
 		};
 	}
 }
@@ -56,6 +57,9 @@ export default fastifyPlugin(
 					separator: ',',
 					default:
 						'http://localhost:3000,http://0.0.0.0:3000,http://127.0.0.1:3000,http://localhost:5173',
+				},
+				JWT_SECRET: {
+					type: 'string',
 				},
 			},
 		};

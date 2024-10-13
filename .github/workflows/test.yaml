@@ -40,9 +40,10 @@ jobs:
           --health-timeout 5s
           --health-retries 5
     env:
-      DATABASE_URL: 'postgresql://postgres_user:postgres_password@localhost:5432/postgres_db'
-      DATABASE_URL_NON_POOLING: 'postgresql://postgres_user:postgres_password@localhost:5432/postgres_db'
-      DATABASE_URL_WITHOUT_SCHEMA: 'postgresql://postgres_user:postgres_password@localhost:5432'
+      DATABASE_URL: "postgresql://postgres_user:postgres_password@localhost:5432/postgres_db"
+      DATABASE_URL_NON_POOLING: "postgresql://postgres_user:postgres_password@localhost:5432/postgres_db"
+      DATABASE_URL_WITHOUT_SCHEMA: "postgresql://postgres_user:postgres_password@localhost:5432"
+      JWT_SECRET: "JWT_SECRET"
     steps:
       - uses: actions/checkout@v3
 
