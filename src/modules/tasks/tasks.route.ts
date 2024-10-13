@@ -12,6 +12,7 @@ export default async (fastify: FastifyInstance) => {
 	}>(
 		'/',
 		{
+			onRequest: [fastify.authenticate],
 			schema: {
 				tags: ['Tasks'],
 				querystring: $ref('getTasksQuerySchema'),
@@ -19,7 +20,6 @@ export default async (fastify: FastifyInstance) => {
 					200: $ref('getTasksSchemaResponseSchema'),
 				},
 			},
-			onRequest: [fastify.authenticate],
 		},
 		taskController.getTasksHander.bind(taskController),
 	);
@@ -29,6 +29,7 @@ export default async (fastify: FastifyInstance) => {
 	}>(
 		'/',
 		{
+			onRequest: [fastify.authenticate],
 			schema: {
 				tags: ['Tasks'],
 				body: $ref('createTaskSchema'),
@@ -46,6 +47,7 @@ export default async (fastify: FastifyInstance) => {
 	}>(
 		'/:id',
 		{
+			onRequest: [fastify.authenticate],
 			schema: {
 				tags: ['Tasks'],
 				params: $ref('updateTasksParamsSchema'),

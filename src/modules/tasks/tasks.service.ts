@@ -6,14 +6,16 @@ export default class TasksService {
 		name,
 		description,
 		dueDate,
+		userId,
 	}: {
 		name: string;
 		description: string;
 		dueDate: Date;
+		userId: number;
 	}): Promise<Tasks> {
 		const createdTask = await prisma.tasks.create({
 			data: {
-				userId: 1,
+				userId,
 				name,
 				description,
 				dueDate,
@@ -25,6 +27,7 @@ export default class TasksService {
 
 	public async updateTask(
 		id: string,
+		userId: number,
 		{
 			name,
 			description,
@@ -35,6 +38,17 @@ export default class TasksService {
 			dueDate: Date;
 		},
 	): Promise<Tasks> {
+		const task = await prisma.tasks.findFirst({
+			where: {
+				id: Number(id),
+				userId,
+			},
+		});
+
+		if (!task) {
+			throw new Error('Task not found');
+		}
+
 		const updatedTask = await prisma.tasks.update({
 			where: {
 				id: Number(id),
@@ -56,7 +70,9 @@ export default class TasksService {
 		sort,
 		order,
 		description,
+		userId,
 	}: {
+		userId: number;
 		id?: string;
 		name?: string;
 		description?: string;
@@ -75,6 +91,7 @@ export default class TasksService {
 				id: id ? Number(id) : undefined,
 				name: name ? name : undefined,
 				description: description ? description : undefined,
+				userId: userId,
 			},
 			orderBy: {
 				[sort || 'id']: order || 'asc',

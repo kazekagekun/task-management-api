@@ -109,7 +109,6 @@ describe('Get Tasks', () => {
 			},
 		});
 
-		console.log(response);
 		expect(response.statusCode).toBe(200);
 		const responseBody = JSON.parse(response.body);
 		expect(Array.isArray(responseBody.data.data)).toBe(true);
