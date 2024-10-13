@@ -33,6 +33,7 @@ export default class AuthController {
 			});
 			// eslint-disable-next-line @typescript-eslint/no-unused-vars
 		} catch (e) {
+			console.log(e);
 			return reply.unauthorized('email and/or password incorrect');
 		}
 	}
