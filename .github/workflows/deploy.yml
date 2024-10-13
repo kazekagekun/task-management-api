@@ -1,14 +1,15 @@
 name: Deploy to ECR and App Runner
 
 on:
-  release:
-    types: [published]
+  push:
+    branches:
+      - main
 
 env:
-  AWS_REGION: ap-southeast-1                # set this to your preferred AWS region, e.g. us-west-1
-  ECR_REPOSITORY: task-management            # set this to your Amazon ECR repository name
+  AWS_REGION: ap-southeast-1 # set this to your preferred AWS region, e.g. us-west-1
+  ECR_REPOSITORY: task-management # set this to your Amazon ECR repository name
   IMAGE_TAG: ${{ github.sha }}
-  CONTAINER_NAME: task-management-api  # Dynamic container name based on commit SHA
+  CONTAINER_NAME: task-management-api # Dynamic container name based on commit SHA
 
 jobs:
   deploy:
@@ -36,7 +37,7 @@ jobs:
         env:
           ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
         run: |
-          docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
+          docker build --target prod -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
           docker tag $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG $ECR_REGISTRY/$ECR_REPOSITORY:$CONTAINER_NAME
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:$CONTAINER_NAME

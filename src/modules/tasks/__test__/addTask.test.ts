@@ -6,7 +6,7 @@ describe('Add Task', () => {
 	let authService: AuthService;
 
 	let user: User;
-	
+
 	beforeAll(async () => {
 		authService = new AuthService();
 
@@ -30,8 +30,8 @@ describe('Add Task', () => {
 		const newTask = {
 			name: 'Test Task',
 			description: 'This is a test task',
-			dueDate: new Date().toISOString(),	
-			userId: user.id,	
+			dueDate: new Date().toISOString(),
+			userId: user.id,
 		};
 
 		const response = await fastify.inject({

@@ -8,7 +8,7 @@ describe('PUT /api/tasks/:id', () => {
 	let authService: AuthService;
 
 	let user: User;
-	
+
 	let taskId: number;
 
 	beforeAll(async () => {
@@ -89,15 +89,15 @@ describe('PUT /api/tasks/:id', () => {
 			name: 'Different User',
 			id: 2,
 			email: 'testdifferentuseremail@test.com',
-			password: "123",
+			password: '123',
 			createdAt: new Date(),
 			updatedAt: new Date(),
-		}
+		};
 
 		user = await prisma.user.create({
 			data: differentUser,
 		});
-			
+
 		const { accessToken } = await authService.createTokens(differentUser);
 
 		const updatedTask = {
