@@ -6,8 +6,6 @@ FROM base AS prod
 COPY package.json /usr/src/app/
 RUN npm install
 COPY . /usr/src/app
-RUN npx prisma generate
-RUN npx prisma migrate deploy
 RUN npm run build
 ENV HOST 0.0.0.0
 CMD [ "npm", "run", "start" ]
