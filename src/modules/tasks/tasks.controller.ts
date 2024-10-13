@@ -16,7 +16,10 @@ export default class TasksController {
 		reply: FastifyReply,
 	) {
 		try {
-			const task = await this.tasksService.createTask(request.body);
+			const task = await this.tasksService.createTask({
+				...request.body,
+				userId: request.user.user.id,
+			});
 
 			return reply.code(201).send({
 				success: true,
@@ -38,7 +41,10 @@ export default class TasksController {
 		reply: FastifyReply,
 	) {
 		try {
-			const tasks = await this.tasksService.getTask(request.query);
+			const tasks = await this.tasksService.getTask({
+				userId: request.user.user.id,
+				...request.query,
+			});
 			return reply.code(200).send({
 				success: true,
 				data: tasks,
@@ -60,7 +66,11 @@ export default class TasksController {
 		reply: FastifyReply,
 	) {
 		try {
-			const task = await this.tasksService.updateTask(request.params.id, request.body);
+			const task = await this.tasksService.updateTask(
+				request.params.id,
+				request.user.user.id,
+				request.body,
+			);
 
 			return reply.code(200).send({
 				success: true,

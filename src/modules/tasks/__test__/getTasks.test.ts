@@ -1,8 +1,16 @@
+import { User } from '@prisma/client';
 import { prisma } from '../../../plugins/prisma';
+import AuthService from '../../auth/auth.service';
 
 describe('Get Tasks', () => {
+	let authService: AuthService;
+
+	let user: User;
+
 	beforeAll(async () => {
-		await prisma.user.create({
+		authService = new AuthService();
+
+		user = await prisma.user.create({
 			data: {
 				name: 'Test User',
 				email: 'test@test.com',
@@ -36,9 +44,13 @@ describe('Get Tasks', () => {
 	});
 
 	it('should retrieve all tasks', async () => {
+		const { accessToken } = await authService.createTokens(user);
 		const response = await fastify.inject({
 			method: 'GET',
-			url: '/api/tasks', // Adjust the URL as needed
+			url: '/api/tasks',
+			headers: {
+				authorization: 'Bearer ' + accessToken,
+			},
 		});
 
 		expect(response.statusCode).toBe(200);
@@ -54,9 +66,13 @@ describe('Get Tasks', () => {
 	});
 
 	it('should retrieve tasks with pagination', async () => {
+		const { accessToken } = await authService.createTokens(user);
 		const response = await fastify.inject({
 			method: 'GET',
-			url: '/api/tasks?page=2', // Adjust the URL as needed
+			url: '/api/tasks?page=2',
+			headers: {
+				authorization: 'Bearer ' + accessToken,
+			},
 		});
 
 		expect(response.statusCode).toBe(200);
@@ -68,9 +84,13 @@ describe('Get Tasks', () => {
 	});
 
 	it('should retrieve tasks with search', async () => {
+		const { accessToken } = await authService.createTokens(user);
 		const response = await fastify.inject({
 			method: 'GET',
-			url: '/api/tasks?name=Task2', // Adjust the URL as needed
+			url: '/api/tasks?name=Task2',
+			headers: {
+				authorization: 'Bearer ' + accessToken,
+			},
 		});
 		expect(response.statusCode).toBe(200);
 		const responseBody = JSON.parse(response.body);
@@ -80,10 +100,15 @@ describe('Get Tasks', () => {
 	});
 
 	it('should retrieve tasks with sorting', async () => {
+		const { accessToken } = await authService.createTokens(user);
 		const response = await fastify.inject({
 			method: 'GET',
-			url: '/api/tasks?sort=name&order=desc', // Adjust the URL as needed
+			url: '/api/tasks?sort=name&order=desc',
+			headers: {
+				authorization: 'Bearer ' + accessToken,
+			},
 		});
+
 		expect(response.statusCode).toBe(200);
 		const responseBody = JSON.parse(response.body);
 		expect(Array.isArray(responseBody.data.data)).toBe(true);

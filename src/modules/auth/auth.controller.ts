@@ -25,7 +25,7 @@ export default class AuthController {
 				throw new Error('password incorrect');
 			}
 
-			const { refreshToken, accessToken } = await this.authService.createTokens(user.id);
+			const { refreshToken, accessToken } = await this.authService.createTokens(user);
 
 			return reply.code(200).send({
 				accessToken: accessToken,

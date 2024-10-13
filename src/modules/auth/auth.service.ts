@@ -9,7 +9,14 @@ export default class AuthService {
 		return compareSync(password, userPassword);
 	}
 
-	private createAccessToken(oldRefreshToken: string): {
+	private createAccessToken(
+		oldRefreshToken: string,
+		user: {
+			id: number;
+			email: string;
+			name: string;
+		},
+	): {
 		accessToken: string;
 		accessTokenPayload: accessTokenPayload;
 	} {
@@ -19,6 +26,7 @@ export default class AuthService {
 			sub: refreshTokenObject.sub,
 			iat: dayjs().unix(),
 			tokenFamily: refreshTokenObject.tokenFamily,
+			user: user,
 		});
 
 		return {
@@ -27,14 +35,14 @@ export default class AuthService {
 		};
 	}
 
-	private async createRefreshToken(userId: number): Promise<{
+	private async createRefreshToken(user: { id: number; name: string; email: string }): Promise<{
 		refreshToken: string;
 		refreshTokenPayload: refreshTokenPayload;
 	}> {
 		const tokenFamily = v4();
 
 		const refreshToken = jwt.signRefreshToken({
-			sub: userId,
+			sub: user.id,
 			iat: dayjs().unix(),
 			aex: dayjs().unix() + 60 * 60 * 24 * 365,
 			tokenFamily: tokenFamily,
@@ -44,7 +52,7 @@ export default class AuthService {
 			data: {
 				refreshToken: refreshToken,
 				tokenFamily: tokenFamily,
-				userId: userId,
+				userId: user.id,
 			},
 		});
 
@@ -82,14 +90,14 @@ export default class AuthService {
 		};
 	}
 
-	public async createTokens(userId: number): Promise<{
+	public async createTokens(user: { id: number; name: string; email: string }): Promise<{
 		refreshToken: string;
 		refreshTokenPayload: refreshTokenPayload;
 		accessToken: string;
 		accessTokenPayload: accessTokenPayload;
 	}> {
-		const { refreshToken, refreshTokenPayload } = await this.createRefreshToken(userId);
-		const { accessToken, accessTokenPayload } = this.createAccessToken(refreshToken);
+		const { refreshToken, refreshTokenPayload } = await this.createRefreshToken(user);
+		const { accessToken, accessTokenPayload } = this.createAccessToken(refreshToken, user);
 
 		return {
 			refreshToken: refreshToken,
@@ -124,6 +132,9 @@ export default class AuthService {
 				refreshToken: oldRefreshToken,
 				userId: oldRefreshTokenObject.sub,
 			},
+			include: {
+				user: true,
+			},
 		});
 
 		if (!userSession) {
@@ -138,7 +149,10 @@ export default class AuthService {
 
 		const { refreshToken, refreshTokenPayload } =
 			await this.createRefreshTokenByRefreshToken(oldRefreshToken);
-		const { accessToken, accessTokenPayload } = this.createAccessToken(refreshToken);
+		const { accessToken, accessTokenPayload } = this.createAccessToken(
+			refreshToken,
+			userSession.user,
+		);
 
 		return {
 			refreshToken: refreshToken,

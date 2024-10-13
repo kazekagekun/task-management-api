@@ -22,7 +22,7 @@ describe('GET /api/auth/user', () => {
 	});
 
 	it('should return status 200 and return user', async () => {
-		const { accessToken } = await authService.createTokens(user.id);
+		const { accessToken } = await authService.createTokens(user);
 
 		const response = await global.fastify.inject({
 			method: 'GET',
@@ -50,6 +50,7 @@ describe('GET /api/auth/user', () => {
 						sub: 542,
 						iat: dayjs().unix(),
 						tokenFamily: '',
+						user,
 					}),
 			},
 		});
