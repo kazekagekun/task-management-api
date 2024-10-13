@@ -56,7 +56,7 @@ export default fastifyPlugin(
 					type: 'string',
 					separator: ',',
 					default:
-						'http://localhost:3000,http://0.0.0.0:3000,http://127.0.0.1:3000,http://localhost:5173',
+						'http://localhost:3000,http://0.0.0.0:3000,http://127.0.0.1:3000,http://localhost:5173,https://d1bw1q4m69qcit.cloudfront.net',
 				},
 				JWT_SECRET: {
 					type: 'string',
