@@ -28,7 +28,7 @@ describe('POST /api/auth/refresh', () => {
 	});
 
 	it('should return status 200, set a valid refreshToken and return a new valid accessToken', async () => {
-		const { refreshToken } = await authService.createTokens(user.id);
+		const { refreshToken } = await authService.createTokens(user);
 
 		const response = await global.fastify.inject({
 			method: 'POST',
@@ -50,7 +50,7 @@ describe('POST /api/auth/refresh', () => {
 
 	it('should return status 401, when using refreshToken that has already been used', async () => {
 		jest.useFakeTimers({ now: Date.now() - 1000 });
-		const { refreshToken } = await authService.createTokens(user.id);
+		const { refreshToken } = await authService.createTokens(user);
 		jest.useRealTimers();
 
 		await global.fastify.inject({
@@ -82,7 +82,7 @@ describe('POST /api/auth/refresh', () => {
 	});
 
 	it('should return status 401, refreshToken is verifiable, but not valid', async () => {
-		const { refreshToken } = await authService.createTokens(user.id);
+		const { refreshToken } = await authService.createTokens(user);
 
 		await prisma.userSession.deleteMany({
 			where: {
@@ -144,7 +144,7 @@ describe('POST /api/auth/refresh', () => {
 		jest.useFakeTimers({
 			now: Date.now() - 1000 * 60 * 60 * 24 * 14 - 1000,
 		});
-		const { refreshToken } = await authService.createTokens(user.id);
+		const { refreshToken } = await authService.createTokens(user);
 		jest.useRealTimers();
 
 		const response = await global.fastify.inject({

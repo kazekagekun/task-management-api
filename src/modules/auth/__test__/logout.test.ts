@@ -22,7 +22,7 @@ describe('POST /api/auth/logout', () => {
 			password: '1234',
 		});
 
-		const { refreshTokenPayload, accessToken } = await authService.createTokens(user.id);
+		const { refreshTokenPayload, accessToken } = await authService.createTokens(user);
 
 		const response = await global.fastify.inject({
 			method: 'POST',
@@ -51,7 +51,7 @@ describe('POST /api/auth/logout', () => {
 			password: '1234',
 		});
 
-		const { refreshTokenPayload, accessToken } = await authService.createTokens(user.id);
+		const { refreshTokenPayload, accessToken } = await authService.createTokens(user);
 
 		await prisma.userSession.delete({
 			where: {

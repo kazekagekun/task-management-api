@@ -2,11 +2,14 @@ import { FastifyInstance } from 'fastify';
 import { $ref } from './tasks.schema';
 import TasksController from './tasks.controller';
 import TasksService from './tasks.service';
+import { CreateTaskBody, GetTasksQuery, UpdateTaskBody, UpdateTaskParams } from './tasks.schema';
 
 export default async (fastify: FastifyInstance) => {
 	const taskController = new TasksController(new TasksService());
 
-	fastify.get(
+	fastify.get<{
+		Querystring: GetTasksQuery;
+	}>(
 		'/',
 		{
 			schema: {
@@ -16,11 +19,14 @@ export default async (fastify: FastifyInstance) => {
 					200: $ref('getTasksSchemaResponseSchema'),
 				},
 			},
+			onRequest: [fastify.authenticate],
 		},
 		taskController.getTasksHander.bind(taskController),
 	);
 
-	fastify.post(
+	fastify.post<{
+		Body: CreateTaskBody;
+	}>(
 		'/',
 		{
 			schema: {
@@ -34,7 +40,10 @@ export default async (fastify: FastifyInstance) => {
 		taskController.createTaskHandler.bind(taskController),
 	);
 
-	fastify.put(
+	fastify.put<{
+		Params: UpdateTaskParams;
+		Body: UpdateTaskBody;
+	}>(
 		'/:id',
 		{
 			schema: {
