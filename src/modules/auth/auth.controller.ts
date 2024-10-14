@@ -20,7 +20,6 @@ export default class AuthController {
 	) {
 		try {
 			const user = await this.userService.getUserByEmail(request.body.email);
-			console.log(process.env);
 
 			if (!this.authService.verifyPassword(user.password, request.body.password)) {
 				throw new Error('password incorrect');
@@ -34,8 +33,6 @@ export default class AuthController {
 			});
 			// eslint-disable-next-line @typescript-eslint/no-unused-vars
 		} catch (e) {
-			console.log(process.env);
-			console.log(e);
 			return reply.unauthorized('email and/or password incorrect');
 		}
 	}
