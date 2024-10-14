@@ -16,17 +16,6 @@ const getLoggerConfig = () => {
 					},
 				},
 			};
-
-		case 'prod':
-			return {
-				transport: {
-					target: 'pino-pretty',
-					options: {
-						translateTime: 'HH:MM:ss Z',
-					},
-				},
-			};
-
 		default:
 			return true;
 	}

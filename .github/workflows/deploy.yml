@@ -1,9 +1,8 @@
 name: Deploy to ECR and App Runner
 
 on:
-  push:
-    branches:
-      - main
+  release:
+    types: [published]
 
 env:
   AWS_REGION: ap-southeast-1 # set this to your preferred AWS region, e.g. us-west-1
